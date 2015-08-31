@@ -52,20 +52,24 @@
           e.preventDefault();
           var 
             email = form.find('#email').val(),
-            username = form.find('#usrename').val(),
+            username = form.find('#username').val(),
             password = form.find('#password').val(),
             c_password = form.find('#c-password').val();
 
+          if(email == '' || username == '' || password == '' || c_password == '') {
+            form.find('#error').show().html('Please fill out all of the form fields');
+            return;
+          }
+          if(!isValidEmail(email)) {
+            form.find('#error').show().html('Please enter a valid email');
+            return;
+          }
           if(!isValidStr([username])) {
             form.find('#error').show().html('Please enter a valid username');
             return;
           }
-          if(!isValidEmail(email)) {
-            form.find('#error').show().html('Please enter a valid username');
-            return;
-          }
-          if(!(email || username || password || c_password)) {
-            form.find('#error').show().html('Please fill out all of the form fields');
+          if(password !== c_password) {
+            form.find('#error').show().html('Passwords do not match');
             return;
           }
           $.ajax({
@@ -76,7 +80,7 @@
               request: 'user.register',
               email: email,
               username: username,
-              passsword: password,
+              password: password,
               c_password: password
             },
             success: function(res) {
@@ -86,6 +90,24 @@
               }
               if($.trim(res.response) == 'Registered') {
                 window.location.replace('index.php');
+                return;
+              }
+              switch($.trim(res.response)) {
+                case 'Passwords do not match':
+                  form.find('#error').show().text('Passwords do not match');
+                  break;
+                case '[User.register] No post data received':
+                  form.find('#error').show().text('An error occured, please reload');
+                  break;
+                case 'Username in use':
+                  form.find('#error').show().text('Username already in use');
+                  break;
+                case 'Email in use':
+                  form.find('#error').show().text('Email already in use');
+                  break;
+                default:
+                  form.find('#error').show().text('An error occured');
+                  break;
               }
             }
           });
@@ -159,7 +181,7 @@
       function isValidStr(inputs) {
         var isValid = true, matcher = /\s/
         inputs.forEach(function(value){
-          if (!value.length || matcher.test(value)) isValid = false;
+          if(!value.length || matcher.test(value)) isValid = false;
         });
         return isValid;
       }

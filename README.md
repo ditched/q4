@@ -1,5 +1,6 @@
 # Q4
 <<<<<<< HEAD
+<<<<<<< HEAD
 Updated version of QuaqChat 4.
 
 #### Some Insight
@@ -7,6 +8,8 @@ QuaqChat started out as a small idea I had to expand my knowledge on making chat
 
 Anyway, suggestions? Send a pull request, ideas? Open one!
 =======
+=======
+>>>>>>> 986dd03362afb9447331fbb63164064866045734
 Simple chatting application with NodeJS and PHP
 
 ### Some insight...
@@ -17,4 +20,7 @@ Anyway, essentially I've used the same CSS, and most of the front-end code from 
 # Thanks to 
 [@jamenmarz](https://github.com/jamenmars) - Provided help with commands and rich text
 
+<<<<<<< HEAD
+>>>>>>> 986dd03362afb9447331fbb63164064866045734
+=======
 >>>>>>> 986dd03362afb9447331fbb63164064866045734

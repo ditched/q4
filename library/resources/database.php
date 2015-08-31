@@ -1,5 +1,5 @@
 <?php
-require '../app.php';
+require 'library/app.php';
  
 abstract class Database {
     private static $_instance = null;
