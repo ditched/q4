@@ -8,3 +8,5 @@ Anyway, essentially I've used the same CSS, and most of the front-end code from 
 
 # Thanks to 
 [@jamenmarz](https://github.com/jamenmarz) - Provided help with commands and rich text
+
+[@starfire1337](https://github.com/starfire1337) - Provided original Database class
