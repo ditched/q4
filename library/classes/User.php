@@ -1,27 +1,27 @@
 <?php 
-require('../app.php');
+require('library/app.php');
 
 class User extends Database {
 
-  public static function register($email, $username, $password) {
+  public function register($email, $username, $password) {
     $details = array();
     $details['email'] = $email;
     $details['username'] = $username;
     $details['password'] = $password;
     $details['ip'] = $this->getClientIP();
     $query = $this->query("INSERT INTO `users` (email, username, password, ip) VALUES (?, ?, ?, ?);", $details);
-    if($query->error) {
+    if($this->error) {
       return false;
     }
     return true;
   }
 
-  public static function login($username, $password) {
+  public function login($username, $password) {
     $details = array();
     $details['username'] = $username;
     $details['password'] = $password;
     $query = $this->query("SELECT `username`, `password` FROM `users` WHERE username=? AND password=?;", $details);
-    if(count($query->results) < 2) {
+    if(count($query->results) < 1) {
       return false;
     }
     if($username == $query->results[0]->username || $password == $query->results[0]->password) {
@@ -30,7 +30,7 @@ class User extends Database {
     return false;
   }
 
-  public static function exists($type, $input) {
+  public function exists($type, $input) {
     if($type == 'email') {
       $query = $this->query("SELECT `id` FROM `users` WHERE `email`=?", array($input));
       if(count($query->results) == 0) {
@@ -44,6 +44,16 @@ class User extends Database {
         return false;
       }
       return true;
+    }
+  }
+
+  public function logout() {
+    session_start();
+    if(!empty($_SESSION['user'])) {
+      unset($_SESSION['user']);
+      return true;
+    } else {
+      return false;
     }
   }
 

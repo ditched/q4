@@ -18,7 +18,7 @@ abstract class Database {
         try {
             $this->_pdo = new PDO('mysql:dbname='.$database.';host='.$hostname.';charset=UTF8', $username, $password);
         } catch (PDOException $e) {
-            die('Database connection failed');
+            die('Database connection failed - Error:' . $e);
         }
     }
    

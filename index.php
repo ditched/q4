@@ -8,8 +8,14 @@
   <div class="norm_container">
     <div class="left">
       <h2>Chat Info</h2>
-      <!--<p><b>Username: </b> <?php //echo $_SESSION['user']['username']; ?></p>-->
-      <p id="version">Version 4</p>
+      <div class="left-wrap">
+        <p id="username"><span>Username:</span> <?php echo $_SESSION['user']['username']; ?></p>
+        <span>Users:</span>
+        <ul id="clients">
+          
+        </ul>
+      </div>
+      <p id="version">Version 4.1</p>
     </div>
     <div class="right">
       <div class="messages">

@@ -62,18 +62,19 @@ body
     color #67AE66
     text-decoration none
 .norm_container
-  width 1000px
+  width 1300px
   margin auto
+  text-align center
   .left
-    width 200px
+    width 300px
     background #fff
     display inline-block
-    min-height 81.6vh
+    min-height 82vh
     vertical-align top
     margin-right 55px
     position relative
     font-family 'Open Sans', sans-serif
-    
+    text-align initial
     h2
       padding 15px
       text-align left
@@ -81,6 +82,14 @@ body
       color #6F6F6F
       font-size 20px
       font-weight 400
+      border-bottom 1px solid rgba(#6F, 0.2)
+      margin-bottom 15px
+    ul
+      list-style none
+    span
+      font-weight 600
+    .left-wrap
+      padding 15px
     #version
       position absolute
       bottom 15px

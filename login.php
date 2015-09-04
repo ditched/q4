@@ -8,6 +8,7 @@
         <a href="register">Register</a>
         <br>
         <input type="submit" value="Login">
+        <br>
         <p id="error"></p>
         <br>
       </form>

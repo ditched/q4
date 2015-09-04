@@ -5,34 +5,61 @@
       var chat = {};
       var 
         _socket,
+        _chatBox,
+        _load,
         _username;
 
       var options = {};
       options['app_socket_host'] = '127.0.0.1:3000';
 
-
       chat.handshake = function() {
+        callUsername();
         _socket = io(options.app_socket_host);
-        _username = getUsername();
+        _load = '55124123123';
+        _chatBox = $('.norm_container .messages');
+        _username = Cookies.get('1b87');
       };
 
-      function callUsername() {
-        return $.ajax({
-          url: 'api.php',
-          type: 'POST',
-          data: {
-            csrf_token: $('meta[name="csrf-token"]').attr('content'),
-            request: 'user.username'
+      chat.subscribe = function() {
+        _socket.on('connect', function() {
+          _chatBox.find('ul').append('<li class="console">Welcome '+_username+'! Type /help to get started</li>');
+          _socket.emit('establish', {username: _username, payload: _load});
+        });
+        _socket.on('chat message', function(data) {
+          _chatBox.find('ul').append('<li class="message"><span class="username">'+data.username+'</span>:'+textToLink(data.message)+'</li>');
+          _chatBox.find('ul').animate({
+            scrollTop: _chatBox.find('ul').scrollHeight
+          }, 200);
+        });
+        _socket.on('update users', function(users) {
+          $('#clients').html('');
+          for(var user in users) {
+            var _user = user;
+            if(users.hasOwnProperty(user)) {
+              $('#clients').append('<li>'+user+'</li>');
+            }
           }
         });
       };
 
-      function getUsername() {
-        var call = callUsername();
-        call.success(function(res) {
-          return res.response;
+      function callUsername() {
+        $.ajax({
+          url: 'api.php',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            csrf_token: $('meta[name="csrf-token"]').attr('content'),
+            request: 'user.username'
+          }
+        }).done(function(res) {
+          Cookies.set('1b87', res.response);
         });
-      };
+      }
+
+      function textToLink(text) {
+        var re = /(https?:\/\/(([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?))/g;
+        return text.replace(re, "<a href=\"$1\" title=\"\" target='_blank' id='mLink'>$1</a>");
+      }
 
       return chat;
     })();
@@ -73,18 +100,19 @@
             return;
           }
           $.ajax({
-            url: 'api.php',
             type: 'POST',
+            url: 'api.php',
             data: {
               csrf_token: $('meta[name="csrf-token"]').attr('content'),
               request: 'user.register',
               email: email,
               username: username,
               password: password,
-              c_password: password
+              c_password: c_password
             },
+            dataType: 'json',
             success: function(res) {
-              if(!res.error) {
+              if(res.error) {
                 form.find('#error').show().text('An error occured');
                 return;
               }
@@ -122,8 +150,8 @@
             username = form.find('#username').val(),
             password = form.find('#password').val();
 
-          if(!isValidStr[username, password]) {
-            form.find('#error').show().text('Plaase enter your username/password');
+          if(username == '' || password == '') {
+            form.find('#error').show().text('Please enter your username/password');
             return;
           }
           $.ajax({
@@ -135,8 +163,10 @@
               username: username,
               password: password
             },
+            dataType: 'json',
             success: function(res) {
-              if(!res.error) {
+              console.log(res);
+              if(res.error) {
                 form.find('#error').show().text('An error occured');
                 return;
               }
@@ -165,12 +195,14 @@
               csrf_token: $('meta[name="csrf-token"]').attr('content'),
               request: 'user.logout'
             },
+            dataType: 'json',
             success: function(res) {
-              if(!res.error) {
+              if(res.error) {
                 alert('An error occured while trying to log you out, contacat an admin.');
                 return;
               }
               if($.trim(res.response) == 'Logged Out') {
+                Cookies.remove('1b87', {path: ''});
                 window.location.replace('index.php');
               }
             }
@@ -218,8 +250,9 @@
       return finder;
     })();
     $(document).on('ready', function() {
-      if(PathFinder.matches('index.php', 0) || PathFinder.matches('', 0)) {
+      if(PathFinder.matches('index.php', 1)) {
         chatCore.handshake();
+        chatCore.subscribe();
       }
       userCore.init();
     });

@@ -7,7 +7,7 @@
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
         <input type="password" id="c-password" placeholder="Confirm Password">
-        <a href="login">Register</a>
+        <a href="login">Login</a>
         <br>
         <input type="submit" value="Register">
         <br>
