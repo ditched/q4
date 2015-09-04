@@ -1,0 +1,19 @@
+{
+  "name": "Q4",
+  "version": "0.0.0",
+  "description": "Simple Chatting application made with NodeJS and PHP",
+  "main": "server.js",
+  "dependencies": {
+    "colors": "~1.1.2",
+    "socket.io": "~1.3.6",
+    "underscore": "~1.8.3",
+    "profanity-filter": "~0.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "",
+    "start": "node server.js"
+  },
+  "author": "programmatical",
+  "license": "BSD-2-Clause"
+}
